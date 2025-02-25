@@ -19,10 +19,9 @@
  */
 
 #define OS_UNFAIR_LOCK_INLINE 1
-#define OSSPINLOCK_USE_INLINED 0
 #include "lock_internal.h"
 #include "os/internal.h"
-#include "resolver/resolver.h"
+#include "resolver.h"
 #include "libkern/OSAtomic.h"
 #include "os/lock.h"
 #include "os/lock_private.h"
@@ -428,8 +427,12 @@ void _os_unfair_lock_corruption_abort(os_ulock_value_t current);
 _Static_assert(OS_UNFAIR_LOCK_DATA_SYNCHRONIZATION ==
 		ULF_WAIT_WORKQ_DATA_CONTENTION,
 		"check value for OS_UNFAIR_LOCK_DATA_SYNCHRONIZATION");
+_Static_assert(OS_UNFAIR_LOCK_ADAPTIVE_SPIN ==
+		ULF_WAIT_ADAPTIVE_SPIN,
+		"check value for OS_UNFAIR_LOCK_ADAPTIVE_SPIN");
 #define OS_UNFAIR_LOCK_OPTIONS_MASK \
-		(os_unfair_lock_options_t)(OS_UNFAIR_LOCK_DATA_SYNCHRONIZATION)
+		(os_unfair_lock_options_t)(OS_UNFAIR_LOCK_DATA_SYNCHRONIZATION | \
+				OS_UNFAIR_LOCK_ADAPTIVE_SPIN)
 #define OS_UNFAIR_LOCK_ALLOW_ANONYMOUS_OWNER 0x01000000u
 
 
